@@ -1,4 +1,4 @@
-"""app/models/base.py"""
+"""application/models/base.py"""
 
 from datetime import datetime, timezone
 

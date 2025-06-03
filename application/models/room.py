@@ -1,7 +1,7 @@
-"""/app/models/room.py"""
+"""/application/models/room.py"""
 
 from extensions import db
-from app.models.base import BaseModel
+from application.models.base import BaseModel
 
 class Room(BaseModel):
     __tablename__ = "rooms"

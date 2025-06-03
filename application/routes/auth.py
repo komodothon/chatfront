@@ -1,10 +1,10 @@
-"""/app/routes/auth.py"""
+"""/application/routes/auth.py"""
 
 from flask import Blueprint, render_template, redirect, make_response, flash, url_for
 from flask_jwt_extended import create_access_token, set_access_cookies
 
-from app.forms import LoginForm
-from app.models import User
+from application.forms import LoginForm
+from application.models import User
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 

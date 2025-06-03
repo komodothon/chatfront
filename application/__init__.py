@@ -1,4 +1,4 @@
-"""/app/__init__.py"""
+"""/application/__init__.py"""
 
 from flask import Flask
 from extensions import db, bcrypt, jwt, migrate
@@ -13,17 +13,17 @@ def create_app(config_class="config.DevConfig"):
     jwt.init_app(app)
 
 
-    print("Before migrate.init_app")
+    print(f"[application/__init__.py]: Before migrate.init_app")
     migrate.init_app(app, db)
-    print("After migrate.init_app")
+    print(f"[application/__init__.py]: After migrate.init_app")
 
     # Import models BEFORE registering blueprints
     # This ensures models are available when the app context is created
-    import app.models  # Import models here
+    import application.models  # Import models here
 
     # Register blueprints
-    from app.routes import all_blueprints
-    print(f"[run.py]: {all_blueprints}")
+    from application.routes import all_blueprints
+    print(f"[application/__init__.py]: {all_blueprints}")
     for blueprint in all_blueprints:
         app.register_blueprint(blueprint, url_prefix=blueprint.url_prefix)
 

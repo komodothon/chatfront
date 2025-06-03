@@ -1,8 +1,8 @@
-"""/app/models/message.py"""
+"""/application/models/message.py"""
 
 
 from extensions import db
-from app.models.base import BaseModel
+from application.models.base import BaseModel
 from sqlalchemy.sql import func
 
 class Message(BaseModel):

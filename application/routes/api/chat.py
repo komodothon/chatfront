@@ -1,4 +1,4 @@
-"""/app/routes/api/chat.py"""
+"""/application/routes/api/chat.py"""
 
 # from flask import Blueprint, request
 # from flask_jwt_extended import jwt_required

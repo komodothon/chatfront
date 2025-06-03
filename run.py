@@ -3,7 +3,7 @@
 import os
 
 from dotenv import load_dotenv
-from app import create_app
+from application import create_app
 
 # Load environment variables
 load_dotenv(dotenv_path=".env") 
@@ -26,6 +26,8 @@ print(f"[run.py] config_class: {config_class}")
 
 # This line is needed in this place outside 'main' for Gunicorn while deploying
 app = create_app(config_class=config_class)
+
+print(f"[run.py]: {app}")
 
 def main():
     app.run(host="0.0.0.0", port=5000, debug=app.config.get("DEBUG", False))

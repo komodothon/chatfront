@@ -1,8 +1,8 @@
-"""app/models/user.py"""
+"""application/models/user.py"""
 
 from extensions import db, bcrypt
-from app.models.base import BaseModel
-from app.models.message import Message
+from application.models.base import BaseModel
+from application.models.message import Message
 
 
 class User(BaseModel):

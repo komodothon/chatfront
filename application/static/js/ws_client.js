@@ -1,4 +1,4 @@
-// /app/static/js/ws_client.js //
+// /application/static/js/ws_client.js //
 
 let socket = null;
 
