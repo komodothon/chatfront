@@ -19,7 +19,8 @@ def create_app(config_class="config.DevConfig"):
 
     # Import models BEFORE registering blueprints
     # This ensures models are available when the app context is created
-    import application.models  # Import models here
+    
+    from application.models import User, UserCredential, Message, Room
 
     # Register blueprints
     from application.routes import all_blueprints
