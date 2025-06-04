@@ -12,12 +12,21 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 def login():
     form = LoginForm()
 
+    print(f"[auth.py]: login route initated.")
+
     if form.validate_on_submit():
+        print(f"[auth.py]: form validated")
+
         username = form.username.data
         password_str = form.password.data
 
+
+        print(f"[auth.py]: username: {username}, password: {password}")
+
         user = User.query.filter_by(username=username).first()
 
+        print(f"[auth.py]: user: {user}")
+        
         if not user or not user.check_password(password_str):
             flash("Username or password Wrong. Please try again.", "danger")
             return redirect(url_for("auth.login"))
