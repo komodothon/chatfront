@@ -4,7 +4,8 @@ let socket = null;
 
 function connectWebSocket(username) {
     // const WS_URL = "wss://144.24.142.130:443";
-    const WS_URL = "wss://oceanotech.in/chat"
+    // const WS_URL = "wss://oceanotech.in/chat"
+    const WS_URL = "http://localhost:8000"
     socket = new WebSocket(WS_URL);
     
     socket.onopen = () => {
