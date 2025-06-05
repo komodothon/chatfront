@@ -10,6 +10,11 @@ ENV/
 .venv/
 .ENV/
 
+
+# Docker and Git
+.dockerignore
+.git/
+
 # VS Code settings
 .vscode/
 

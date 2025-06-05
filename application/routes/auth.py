@@ -37,5 +37,8 @@ def login():
         set_access_cookies(response, access_token)
 
         return response
+    else:
+        print("[auth.py]: form validation failed")
+        print(form.errors)  # << Add this
 
     return render_template("login.html", form=form)
