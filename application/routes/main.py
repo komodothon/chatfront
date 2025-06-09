@@ -1,7 +1,8 @@
 """/application/routes/main.py"""
 
 from flask import Blueprint, render_template, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
+from datetime import timedelta
 
 from application.models import User
 
@@ -26,4 +27,13 @@ def home():
     
     username = user.username
 
-    return render_template("home.html", username=username)
+    ws_token = create_access_token(
+        identity=str(user.id),
+        additional_claims={"scope": "websocket"},
+        expires_delta=timedelta(minutes=5)
+    )
+
+    print(f"[main.py]ws_token: {ws_token}")
+
+
+    return render_template("home.html", username=username, ws_token=ws_token)
