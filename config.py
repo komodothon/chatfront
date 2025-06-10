@@ -14,7 +14,7 @@ class Config:
     SESSION_COOKIE_SECURE = False
 
     # JWT related
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super_secret_jwt_key")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
     JWT_TOKEN_LOCATION = os.getenv("JWT_TOKEN_LOCATION", "cookies").split(",")
     JWT_ACCESS_COOKIE_PATH = os.getenv("JWT_ACCESS_COOKIE_PATH", "/")
     JWT_COOKIE_SECURE = os.getenv("JWT_COOKIE_SECURE", "False").lower() in ("true", "1", "yes")

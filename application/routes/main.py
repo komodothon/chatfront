@@ -1,14 +1,18 @@
 """/application/routes/main.py"""
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from datetime import timedelta
 
 from application.models import User
 
-main_bp = Blueprint("main", __name__, url_prefix="/main")
+main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/", methods=["GET"])
+def index():
+    return redirect(url_for("auth.login"))
+
+@main_bp.route("/home", methods=["GET"])
 @jwt_required()
 def home():
     id = get_jwt_identity()
