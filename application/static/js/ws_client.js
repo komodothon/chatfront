@@ -4,6 +4,41 @@ let isLoading = false;
 let users_online = new Set();
 
 
+function logout() {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.close(1000, "User logged out");
+  }
+  console.log("socket closed.")
+  window.location.href = "/auth/logout";
+}
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadChatHistory();
+  connectWebSocket(CURRENT_USERNAME);
+
+  const sendBtn = document.getElementById("send-btn");
+  sendBtn.addEventListener("click", () => {
+    const input = document.getElementById("message-input");
+    const message = input.value.trim();
+    if (message) {
+      sendMessage(message, CURRENT_USERNAME);
+      input.value = "";
+    }
+  });
+
+  // Attach scroll event for infinite loading
+  const chatContainer = document.getElementById("chat-container");
+  chatContainer.addEventListener("scroll", handleInfiniteScroll);
+
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", logout);
+  }
+
+});
+
 function connectWebSocket(username) {
     // const WS_URL = `wss://chat.oceanotech.in/?token=${ws_token}`;
 

@@ -19,7 +19,8 @@ Chat | {{ username }}
         <div id="chat-box" style="display: flex; flex-direction: column;"></div>
       </div>
     </div>
-
+    
+    
     <!-- Online Users Panel (optional, for later) -->
     <div class="col-md-4">
       <div class="card">
@@ -28,6 +29,12 @@ Chat | {{ username }}
         </div>
         <ul class="list-group list-group-flush" id="online-users"></ul>
       </div>
+   
+      <!-- Logout Button -->
+      <button id="logout-btn" class="btn btn-outline-danger">
+        <i class="bi bi-box-arrow-right me-1"></i> Logout
+      </button>
+
     </div>
   </div>
 </div>
@@ -42,24 +49,4 @@ Chat | {{ username }}
 <!-- Load external JS WebSocket client -->
 <script src="{{ url_for('static', filename='js/ws_client.js') }}"></script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    loadChatHistory();
-    connectWebSocket(CURRENT_USERNAME);
-
-    const sendBtn = document.getElementById("send-btn");
-    sendBtn.addEventListener("click", () => {
-      const input = document.getElementById("message-input");
-      const message = input.value.trim();
-      if (message) {
-        sendMessage(message, CURRENT_USERNAME);
-        input.value = "";
-      }
-    });
-
-    // Attach scroll event for infinite loading
-    const chatContainer = document.getElementById("chat-container");
-    chatContainer.addEventListener("scroll", handleInfiniteScroll);
-  });
-</script>
 {% endblock %}

@@ -1,7 +1,7 @@
 """/application/routes/auth.py"""
 
-from flask import Blueprint, render_template, redirect, make_response, flash, url_for
-from flask_jwt_extended import create_access_token, set_access_cookies
+from flask import Blueprint, render_template, request, redirect, make_response, flash, url_for
+from flask_jwt_extended import jwt_required, create_access_token, set_access_cookies, unset_jwt_cookies
 
 from application.forms import LoginForm
 from application.models import User
@@ -41,3 +41,17 @@ def login():
         print(form.errors)  # << Add this
 
     return render_template("login.html", form=form)
+
+
+@auth_bp.route("/logout", methods=["GET"])
+@jwt_required()
+def logout():
+    print(f"[auth.py] request: {request}")
+    response = make_response(redirect(url_for("auth.login")))
+    print(f"[auth.py] response: {response}")
+    unset_jwt_cookies(response)
+    
+    return response
+
+
+
