@@ -20,12 +20,11 @@ def login():
         username = form.username.data
         password_str = form.password.data
 
-
-        print(f"[auth.py]: username: {username}, password: {password_str}")
+        # print(f"[auth.py]: username: {username}")
 
         user = User.query.filter_by(username=username).first()
 
-        print(f"[auth.py]: user: {user}")
+        # print(f"[auth.py]: user: {user}")
 
         if not user or not user.check_password(password_str):
             flash("Username or password Wrong. Please try again.", "danger")

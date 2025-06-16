@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_tok
 from datetime import timedelta
 
 from application.models import User
+from application.utils import get_user_from_id
 
 main_bp = Blueprint("main", __name__)
 
@@ -24,7 +25,7 @@ def home():
     # print("Authorization header:", auth_header)
     # print("Access token cookie:", access_cookie)
 
-    user = User.query.get(id)
+    user = get_user_from_id(id)
 
     if not user:
         return "User not found.", 404
@@ -33,7 +34,10 @@ def home():
 
     ws_token = create_access_token(
         identity=str(user.id),
-        additional_claims={"scope": "websocket"},
+        additional_claims={
+            "scope": "websocket",
+            "username": username,
+        },
         expires_delta=timedelta(minutes=5)
     )
 

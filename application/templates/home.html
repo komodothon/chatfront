@@ -14,8 +14,8 @@ Chat | {{ username }}
         <button id="send-btn" class="btn btn-primary">Send</button>
       </div>
 
-      <!-- Chat Box (flex column-reverse to show newest at top) -->
-      <div id="chat-container" class="border rounded p-3 mb-3 bg-light" style="height: 400px; overflow-y: scroll; display: flex; flex-direction: column-reverse;">
+      <!-- Chat Box (column-reverse to show newest at top) -->
+      <div id="chat-container" class="border rounded p-3 mb-3 bg-light" style="height: 600px; overflow-y: auto; display: flex; flex-direction: column;">
         <div id="chat-box" style="display: flex; flex-direction: column;"></div>
       </div>
     </div>
@@ -37,7 +37,6 @@ Chat | {{ username }}
 <script>
   const CURRENT_USERNAME = "{{ username }}";
   const ws_token = "{{ ws_token }}";
-  
 </script>
 
 <!-- Load external JS WebSocket client -->
@@ -45,6 +44,7 @@ Chat | {{ username }}
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    loadChatHistory();
     connectWebSocket(CURRENT_USERNAME);
 
     const sendBtn = document.getElementById("send-btn");
@@ -56,6 +56,10 @@ Chat | {{ username }}
         input.value = "";
       }
     });
+
+    // Attach scroll event for infinite loading
+    const chatContainer = document.getElementById("chat-container");
+    chatContainer.addEventListener("scroll", handleInfiniteScroll);
   });
 </script>
 {% endblock %}

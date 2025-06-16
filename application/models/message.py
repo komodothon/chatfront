@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 class Message(BaseModel):
     __tablename__ = "messages"
 
-    timestamp = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    timestamp = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
     content = db.Column(db.String(1000), nullable=False)
 
     # Sender
