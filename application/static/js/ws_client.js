@@ -40,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function connectWebSocket(username) {
-    // const WS_URL = `wss://chat.oceanotech.in/?token=${ws_token}`;
+    const WS_URL = `wss://chat.oceanotech.in/?token=${ws_token}`;
 
-    const WS_URL = `ws://localhost:8000/?token=${ws_token}`;
+    // const WS_URL = `ws://localhost:8000/?token=${ws_token}`;
   
     socket = new WebSocket(WS_URL);
 

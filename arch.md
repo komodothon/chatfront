@@ -2,46 +2,50 @@
 │        Public Internet     │      │        Admin/You           │
 │  (User on browser/phone)   │      │  (You deploy and manage)   │
 └────────────┬───────────────┘      └────────────┬───────────────┘
-             │                                    │
-             ▼                                    ▼
-
-  🌐 HTTPS Request                         ⚙️ SSH / SCP / OCI Console
+             │                                   │
+             ▼                                   ▼
+  🌐 HTTPS Request                         ⚙️ SSH / GitHub Actions / Console
       to /login /chat
              │
              ▼
-
-┌────────────────────────────────────────────────────────────────────┐
-│                          🔵 OCI VM #1                              │
-│                        (Frontend Server)                           │
-│                                                                    │
-│   ┌────────────────────────────┐   ┌────────────────────────────┐  │
-│   │   chatfront (Flask App)    │   │   auth-service (Flask API) │  │
-│   │  - Serves UI via HTML/JS   │   │  - Handles user login/reg  │  │
-│   │  - Sends login to /auth    │──▶│  - Validates + issues JWT  │  │
-│   │  - Sends chat to WebSocket │   │                            │  │
-│   └────────────────────────────┘   └────────────────────────────┘  │
-└────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                       🔵 OCI VM #1                                         │
+│                                 (Frontend + DB Server)                                     │
+│   ┌────────────────────────────┐      ┌────────────────────────────────────┐               │
+│   │   NGINX (Reverse Proxy)    │─────▶│      chatfront (Flask App)         │────────┐      │
+│   │  - Routes / /auth /static  │      │  - Serves UI via HTML/JS           │        │      │
+│   │  - SSL termination         │      │  - Talks to auth-service           │        │      │
+│   └────────────────────────────┘      │  - Sends chat to WebSocket server  │        ▼      │
+│                                       │  - Interacts with PostgreSQL       │  ┌───────────┐│
+│                                       └────────────────────────────────────┘  │PostgreSQL ││
+│                                          ▲     ▲                              │ Database  ││
+│                                          │     │                              │(Standalone)│
+│                                          │     └──────────────────────────────│ External  ││
+│                                          │                                    │   Access  ││
+│                     ┌────────────────────────────┐                            │    Only   ││
+│                     │ auth-service (Flask API)   │                            │           ││
+│                     │ - Handles user login/reg   │                            |           ││
+│                     │ - Issues JWT to chatfront  │                            └───────────┘│ 
+│                     └────────────────────────────┘                                         │
+│    ⚙️ Docker + GitHub Actions for CI/CD:                                                   │
+│       - Automates chatfront image build and push                                           │
+│       - Deploys via SSH to VM #1                                                           │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
              │ JWT
              ▼
-
-┌────────────────────────────────────────────────────────────────────┐
-│                          🟢 OCI VM #2                              │
-│                      (WebSocket Server)                            │
-│                                                                    │
-│   ┌────────────────────────────┐                                   │
-│   │   chat_server_ws.py        │                                   │
-│   │  - Handles socket.io chat  │                                   │
-│   │  - Authenticates users     │◀── uses token to verify user      │
-│   │  - Stores chat history     │                                   │
-│   └────────────────────────────┘                                   │
-└────────────────────────────────────────────────────────────────────┘
-             │
-             ▼
-
-      📦 PostgreSQL Database (1 instance)
- ┌─────────────────────────────────────┐
- │        OCI Free VM / External DB    │
- │   - Stores users, credentials       │
- │   - Stores messages, timestamps     │
- │   - Used by auth + chat_server_ws   │
- └─────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                       🟢 OCI VM #2                                         │
+│                                (WebSocket Backend Server)                                  │
+│                                                                                            │
+│   ┌────────────────────────────┐     ┌────────────────────────────┐                        │
+│   │   NGINX (Reverse Proxy)    │────▶│   chatserv (Python WS App) │                        │
+│   │  - Routes /ws              │     │ - Handles WebSocket conn   │                        │
+│   │  - SSL termination         │     │ - Verifies token from user │                        │
+│   └────────────────────────────┘     │ - Calls chatfront to store │                        │
+│                                      │   messages via REST API    │                        │
+│                                      └────────────────────────────┘                        │
+│                                                                 Manual Deployment:         │
+│                                                                 - `chatserv` runs as a     │
+│                                                                   systemd background       │
+│                                                                   service on VM #2         │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
