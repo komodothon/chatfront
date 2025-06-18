@@ -142,9 +142,9 @@ function renderSingleMessage(msg, toTop = false) {
     msgDiv.className = "mb-2 p-2 border rounded";
 
     if (msg.sender === CURRENT_USERNAME) {
-        msgDiv.classList.add("bg-success", "text-white", "align-self-end");
+        msgDiv.classList.add("bg-primary", "text-white", "align-self-end");
     } else {
-        msgDiv.classList.add("bg-light", "align-self-start");
+        msgDiv.classList.add("bg-secondary", "text-white", "align-self-start");
     }
 
     let formattedTime;
