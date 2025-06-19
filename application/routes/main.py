@@ -24,24 +24,31 @@ def home():
 
     # print("Authorization header:", auth_header)
     # print("Access token cookie:", access_cookie)
+    print(f"[main.py] JWT identity: {id}")
 
-    user = get_user_from_id(id)
+    try:
+        user = get_user_from_id(id)
+    except Exception as e:
+        print(f"[main.py] ⚠️ Error fetching user from DB: {e}")
+        return "Internal server error while fetching user.", 500
 
     if not user:
         return "User not found.", 404
-    
-    username = user.username
 
-    ws_token = create_access_token(
-        identity=str(user.id),
-        additional_claims={
-            "scope": "websocket",
-            "username": username,
-        },
-        expires_delta=timedelta(minutes=5)
-    )
+    try:
+        username = user.username
 
-    print(f"[main.py]ws_token: {ws_token}")
+        ws_token = create_access_token(
+            identity=str(user.id),
+            additional_claims={
+                "scope": "websocket",
+                "username": username,
+            },
+            expires_delta=timedelta(minutes=5)
+        )
+    except Exception as e:
+        print(f"[main.py] ⚠️ Error creating WebSocket token: {e}")
+        return "Failed to create session token.", 500
 
-
+    print(f"[main.py] ws_token: {ws_token}")
     return render_template("home.html", username=username, ws_token=ws_token)

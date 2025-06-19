@@ -22,20 +22,23 @@ def login():
 
         # print(f"[auth.py]: username: {username}")
 
-        user = User.query.filter_by(username=username).first()
+        try:
+            user = User.query.filter_by(username=username).first()
 
-        # print(f"[auth.py]: user: {user}")
+            if not user or not user.check_password(password_str):
+                flash("Username or password wrong. Please try again.", "danger")
+                return redirect(url_for("auth.login"))
 
-        if not user or not user.check_password(password_str):
-            flash("Username or password Wrong. Please try again.", "danger")
+            access_token = create_access_token(identity=str(user.id))
+
+            response = make_response(redirect(url_for("main.home")))
+            set_access_cookies(response, access_token)
+            return response
+
+        except Exception as e:
+            print(f"[auth.py] ⚠️ Exception during login: {e}")
+            flash("Something went wrong during login. Please try again later.", "danger")
             return redirect(url_for("auth.login"))
-        
-        access_token = create_access_token(identity=str(user.id))
-
-        response = make_response(redirect(url_for("main.home")))
-        set_access_cookies(response, access_token)
-
-        return response
     else:
         print("[auth.py]: form validation failed")
         print(form.errors)  # << Add this
