@@ -17,11 +17,14 @@ jwt_algorithm = os.getenv("JWT_ALGORITHM")
 def save_message():
     # --- Token Extraction & Validation ---
     auth_header = request.headers.get("Authorization")
+    print(f"[api/messages.py] auth_header: {auth_header}")
 
     if not auth_header or not auth_header.startswith("Bearer "):
         return jsonify({"error": "Missing or malformed Authorization header."}), 401
 
     token = auth_header.split(" ")[1]
+    print(f"[api/messages.py] token: {token}")
+
 
     try:
         decoded_token = jwt.decode(token, jwt_secret_key, algorithms=[jwt_algorithm])
