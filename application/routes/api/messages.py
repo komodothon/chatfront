@@ -15,6 +15,8 @@ jwt_algorithm = os.getenv("JWT_ALGORITHM")
 
 @messages_api_bp.route("/save_message", methods=["POST"])
 def save_message():
+    print(f"[api/messages.py] Incoming request to save_message")
+
     # --- Token Extraction & Validation ---
     auth_header = request.headers.get("Authorization")
     print(f"[api/messages.py] auth_header: {auth_header}")
@@ -25,6 +27,12 @@ def save_message():
     token = auth_header.split(" ")[1]
     print(f"[api/messages.py] token: {token}")
 
+    # header = jwt.get_unverified_header(token)
+    # print("[api/messages.py] JWT header:", header)
+
+    # # Also print body (no verification yet)
+    # body = jwt.decode(token, options={"verify_signature": False})
+    # print("[api/messages.py] JWT body (unverified):", body)
 
     try:
         decoded_token = jwt.decode(token, jwt_secret_key, algorithms=[jwt_algorithm])
@@ -32,8 +40,10 @@ def save_message():
         username = decoded_token.get("username")
         print(f"[api/messages.py] decoded_token: {decoded_token}")
     except ExpiredSignatureError:
+        print(f"[api/messages.py] ⚠️ Token has expired.")
         return jsonify({"error": "Token has expired."}), 401
     except InvalidTokenError:
+        print(f"[api/messages.py] ⚠️ Invalid token.")
         return jsonify({"error": "Invalid token."}), 401
     except Exception as e:
         print(f"[api/messages.py] Unexpected JWT decode error: {e}")

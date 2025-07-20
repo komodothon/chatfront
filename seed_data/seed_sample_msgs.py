@@ -26,7 +26,7 @@ with app.app_context():
     time_now = datetime.now()
     days_back = 50
 
-    for i in range(1000):
+    for i in range(1, 1001):
         user = choice(users)
         content = f"[msg #{i}] {choice(sample_messages)}"
 

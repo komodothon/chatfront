@@ -16,7 +16,7 @@ app = create_app()
 with app.app_context():
     db.create_all()
 
-    for i in range(15):
+    for i in range(1, 21):
         username = f"user{i}"
         email = f"user{i}@sample.com"
         first_name = f"First{i}"

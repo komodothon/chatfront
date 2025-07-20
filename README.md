@@ -90,7 +90,7 @@ Over the past three weeks, we have been building and live-streaming the developm
 - **NGINX Reverse Proxy**
   - Routes `/ws` endpoint
   - SSL termination
-- **chatserv (Python WebSocket Server)**
+- **chatserv (Fastapi WebSocket Server)**
   - Authenticates JWT from incoming WebSocket clients
   - Forwards messages to `chatfront` REST API for persistence
   - Tracks connected users in memory

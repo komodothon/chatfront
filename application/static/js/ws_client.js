@@ -43,11 +43,15 @@ function connectWebSocket(username) {
     // Production route
     // const WS_URL = `wss://chat.oceanotech.in/?token=${ws_token}`;
 
-    // below for testing at self-PC
-    // const WS_URL = `ws://localhost:8000/?token=${ws_token}`;
+    // testing  on fastapi ws listener / self-pc
+    // const WS_URL = `ws://localhost:8000/ws/chat?token=${ws_token}`;
 
-    // testing without token on fastapi ws listener
-    const WS_URL = `ws://localhost:8000/ws/chat/?token=${ws_token}`;
+    // testing  on OCI VM with ext ips
+    // const WS_URL = `ws://140.245.217.139:8000/ws/chat?token=${ws_token}`;
+    
+    // with NGINX reverse-proxy at OCI VM
+    const WS_URL = `ws://140.245.217.139/ws/chat?token=${ws_token}`;
+
   
     socket = new WebSocket(WS_URL);
 
