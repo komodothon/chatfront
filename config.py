@@ -29,14 +29,14 @@ class DevConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DEV_DATABASE_URI",
-        "postgresql://chatuser:chatpassword@140.245.232.106:5432/chatapp_dev"
+        "postgresql://chatuser:chatpassword@68.233.111.22:5432/chatapp_dev"
     )
 
 class TestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "TEST_DATABASE_URI",
-        "postgresql://chatuser:chatpassword@140.245.232.106:5432/chatapp_dev"
+        "postgresql://chatuser:chatpassword@68.233.111.22:5432/chatapp_dev"
     )
     BCRYPT_LOG_ROUNDS = 4  # Faster hashing for tests
 
@@ -45,6 +45,6 @@ class ProdConfig(Config):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URI",
-        "postgresql://chatuser:chatpassword@140.245.232.106:5432/chatapp_dev"
+        "postgresql://chatuser:chatpassword@68.233.111.22:5432/chatapp_dev"
     )
     SESSION_COOKIE_SECURE = True  # Required for HTTPS
